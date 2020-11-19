@@ -1,16 +1,17 @@
 package tests;
 
+import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.Test;
-
 import static com.codeborne.selenide.Condition.cssClass;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
-public class TextBoxTests {
 
+public class TextBoxTests {
     @Test
     void fillFormTest() {
+        Configuration.startMaximized = true;
         open("https://demoqa.com/text-box");
 
         $("#userName").val("Alex");
@@ -33,11 +34,12 @@ public class TextBoxTests {
                 currentAddress = "Montenegro",
                 permanentAddress = "Street 1";
 
-
+        Configuration.startMaximized = true;
         open("https://demoqa.com/text-box");
 
         $("#userName").val(userName);
         $("#userEmail").val(email);
+        $("#currentAddress").val(currentAddress);
         $("#currentAddress").val(currentAddress);
         $("#permanentAddress").val(permanentAddress);
         $("#submit").click();
@@ -60,6 +62,7 @@ public class TextBoxTests {
 
     @Test
     void wrongEmailTest() {
+        Configuration.startMaximized = true;
         open("https://demoqa.com/text-box");
 
         $("#userName").val("Alex");

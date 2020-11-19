@@ -15,7 +15,7 @@ class CssXpathExamples {
 
         // другие возможности сделать тоже самое
         $("#email").setValue("some@email.com"); // самое тру
-        $(byId("email")).setValue("some@email.com");
+        $("#email").setValue("some@email.com");
         $("[id='email']").setValue("some@email.com");
         $("input[id='email']").setValue("some@email.com");
         $("input#email").setValue("some@email.com");
@@ -30,7 +30,7 @@ class CssXpathExamples {
         $x("//input[@name='email']").setValue("some@email.com");
         $x("//*[@name='email']").setValue("some@email.com");
 
-        $(byClassName("login_form_input_box")).setValue("some@email.com");
+        $(".login_form_input_box").setValue("some@email.com");
         $(".login_form_input_box").setValue("some@email.com");
         $(".inputtext.login_form_input_box").setValue("some@email.com");
         $("input.inputtext.login_form_input_box").setValue("some@email.com");
