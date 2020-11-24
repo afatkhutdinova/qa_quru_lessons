@@ -36,7 +36,6 @@ public class AutomationPracticeForm {
 
         // actions
         open("https://demoqa.com/automation-practice-form");
-
         $("#firstName").val(firstName);
         $("#lastName").val(lastName);
         $("#userEmail").val(userEmail);
@@ -68,7 +67,6 @@ public class AutomationPracticeForm {
 
         // check output table
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-
         $x("//td[text()='Student Name']").sibling(0).shouldHave(text(firstName + " " + lastName));
         $x("//td[text()='Student Email']").sibling(0).shouldHave(text(userEmail));
         $x("//td[text()='Gender']").sibling(0).shouldHave(text("Female"));
