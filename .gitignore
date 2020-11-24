@@ -40,3 +40,4 @@ target/
 .todo
 local.properties
 build.gradle
+.DS_Store

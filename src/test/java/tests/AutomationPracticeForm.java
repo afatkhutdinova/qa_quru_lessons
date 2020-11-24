@@ -1,9 +1,10 @@
 package tests;
-
-import com.codeborne.selenide.CollectionCondition;
 import com.codeborne.selenide.Configuration;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import java.io.File;
+
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selectors.byAttribute;
@@ -11,27 +12,29 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class AutomationPracticeForm {
 
+    @BeforeAll
+    static void setup() {
+        Configuration.startMaximized = true;
+    }
+
     @Test
-    void fillTheFormPositiveCase() {
+    void positiveSubmitFormTest() {
 
-        // test data test
-
+        // test data
         String  firstName = "Joe";
         String  lastName = "Doe";
         String  userEmail = "test@email.com";
         String  userNumber = "2104443345";
-        String  genderId = "3"; // 1 - Male, 2 - Female, 3 - Other
+        String  genderId = "2"; // 1 - Male, 2 - Female, 3 - Other
         String  currentAddress = "Test Address, 45 - 56";
         String  month = "January";
         String  day = "17"; // two digits
         String  year = "1992";
-        String[] Subjects = {"Chemistry", "English", "Computer Science"}; // Subjects = {"Computer Science", "Chemistry", "English"};
-        String[] Hobbies = {"1"}; // 1 - Sports, 2- Reading, 3 - Music
-        File file = new File("src/test/java/docs/58832_300x300.jpg");
+        String[] Subjects = {"Chemistry", "English", "Computer Science"};
+        String[] Hobbies = {"1", "2"}; // 1 - Sports, 2- Reading, 3 - Music
+        File file = new File("src/test/resources/58832_300x300.jpg");
 
-        // ----------------------------------------------------------------------------------------------------------------
-
-        Configuration.startMaximized = true;
+        // actions
         open("https://demoqa.com/automation-practice-form");
 
         $("#firstName").val(firstName);
@@ -47,13 +50,12 @@ public class AutomationPracticeForm {
 
         $("#currentAddress").val(currentAddress);
 
-        for (String subject : Subjects) {
-            $("#subjectsInput").val(subject).pressEnter();
-        }
+        $("#subjectsInput").val(Subjects[0]).pressEnter();
+        $("#subjectsInput").val(Subjects[1]).pressEnter();
+        $("#subjectsInput").val(Subjects[2]).pressEnter();
 
-        for (String hobby : Hobbies) {
-            $(byAttribute("for", "hobbies-checkbox-" + hobby)).click();
-        }
+        $(byAttribute("for", "hobbies-checkbox-" + Hobbies[0])).click();
+        $(byAttribute("for", "hobbies-checkbox-" + Hobbies[1])).click();
 
         $("#uploadPicture").uploadFile(file);
 
@@ -65,56 +67,25 @@ public class AutomationPracticeForm {
         $("#submit").click();
 
         // check output table
-
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $$("tr").filterBy(text("Label")).shouldBe(CollectionCondition.itemWithText("Label Values"));
-        $$("tr").filterBy(text("Student Name")).shouldBe(CollectionCondition.itemWithText("Student Name " + firstName + " " + lastName));
-        $$("tr").filterBy(text("Student Email")).shouldBe(CollectionCondition.itemWithText("Student Email " + userEmail));
 
-        if (genderId.equals("1")) {
-            $$("tr").filterBy(text("Gender")).shouldBe(CollectionCondition.itemWithText("Gender Male"));
-        } else if (genderId.equals("2")) {
-            $$("tr").filterBy(text("Gender")).shouldBe(CollectionCondition.itemWithText("Gender Female"));
-        } else {
-            $$("tr").filterBy(text("Gender")).shouldBe(CollectionCondition.itemWithText("Gender Other"));
-        }
+        $x("//td[text()='Student Name']").sibling(0).shouldHave(text(firstName + " " + lastName));
+        $x("//td[text()='Student Email']").sibling(0).shouldHave(text(userEmail));
+        $x("//td[text()='Gender']").sibling(0).shouldHave(text("Female"));
+        $x("//td[text()='Mobile']").sibling(0).shouldHave(text(userNumber));
+        $x("//td[text()='Date of Birth']").sibling(0).shouldHave(text(day + " " + month + "," + year));
 
-        $$("tr").filterBy(text("Mobile")).shouldBe(CollectionCondition.itemWithText("Mobile " + userNumber));
-        $$("tr").filterBy(text("Date of Birth")).shouldBe(CollectionCondition.itemWithText("Date of Birth " + day + " " + month + "," + year));
+        $x("//td[text()='Subjects']").sibling(0).shouldHave(text(Subjects[0]));
+        $x("//td[text()='Subjects']").sibling(0).shouldHave(text(Subjects[1]));
+        $x("//td[text()='Subjects']").sibling(0).shouldHave(text(Subjects[2]));
 
-        String str =  "";
-        for (int i = 0; (Subjects.length - 1) > i; i++) {
-            str = str + Subjects[i] + ", ";
-        }
-        $$("tr").filterBy(text("Subjects")).shouldBe(CollectionCondition.itemWithText("Subjects " + str + Subjects[Subjects.length-1]));
+        $x("//td[text()='Hobbies']").sibling(0).shouldHave(text("Sports"));
+        $x("//td[text()='Hobbies']").sibling(0).shouldHave(text("Reading"));
 
-        String str2 = "Hobbies ";
-        for (int a = 0; a < Hobbies.length; a++) {
-            if (Hobbies[a].equals("1")) {
-               str2 = str2 + "Sports";
-            } else if (Hobbies[a].equals("2")) {
-                str2 = str2 + "Reading";
-            } else {
-                str2 = str2 + "Music";
-            }
-            if (a < Hobbies.length  - 1)  {
-                str2 = str2 + ", ";
-            }
-        }
-        $$("tr").filterBy(text("Hobbies")).shouldBe(CollectionCondition.itemWithText(str2));
-
-        $$("tr").filterBy(text("Picture")).shouldBe(CollectionCondition.itemWithText("Picture " + file.getName()));
-        $$("tr").filterBy(text("Address")).shouldBe(CollectionCondition.itemWithText("Address " + currentAddress));
-        $$("tr").filterBy(text("State and City")).shouldBe(CollectionCondition.itemWithText("State and City Haryana Karnal"));
-
-        // check output table closing
-
-        $("#closeLargeModal").should(exist);
-        $("#closeLargeModal").shouldHave(type("button"));
-        $("#closeLargeModal").click();
-        $(".modal-content").shouldNot(exist);
+        $x("//td[text()='Picture']").sibling(0).shouldHave(text(file.getName()));
+        $x("//td[text()='Address']").sibling(0).shouldHave(text(currentAddress));
+        $x("//td[text()='State and City']").sibling(0).shouldHave(text("Haryana Karnal"));
 
         closeWindow();
-        System.out.print("");
     }
 }
