@@ -31,7 +31,6 @@ public class AutomationPracticeForm {
         String  day = "17"; // two digits
         String  year = "1992";
         String[] Subjects = {"Chemistry", "English", "Computer Science"};
-        //String[] Hobbies = {"1", "2"}; // 1 - Sports, 2- Reading, 3 - Music
         File file = new File("src/test/resources/58832_300x300.jpg");
 
         // actions
