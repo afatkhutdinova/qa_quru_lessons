@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
-import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.by;
-import static com.codeborne.selenide.Selectors.byAttribute;
+import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 
 public class AutomationPracticeForm {
@@ -31,7 +31,7 @@ public class AutomationPracticeForm {
         String  day = "17"; // two digits
         String  year = "1992";
         String[] Subjects = {"Chemistry", "English", "Computer Science"};
-        String[] Hobbies = {"1", "2"}; // 1 - Sports, 2- Reading, 3 - Music
+        //String[] Hobbies = {"1", "2"}; // 1 - Sports, 2- Reading, 3 - Music
         File file = new File("src/test/resources/58832_300x300.jpg");
 
         // actions
@@ -53,15 +53,15 @@ public class AutomationPracticeForm {
         $("#subjectsInput").val(Subjects[1]).pressEnter();
         $("#subjectsInput").val(Subjects[2]).pressEnter();
 
-        $(byAttribute("for", "hobbies-checkbox-" + Hobbies[0])).click();
-        $(byAttribute("for", "hobbies-checkbox-" + Hobbies[1])).click();
+        $(byText("Sports")).click();
+        $(byText("Reading")).click();
 
         $("#uploadPicture").uploadFile(file);
 
         $("#state").scrollTo().click();
-        $("#react-select-3-option-2").click();
+        $(byText("Haryana")).click();
         $("#city").click();
-        $("#react-select-4-option-0").click();
+        $(byText("Karnal")).click();
 
         $("#submit").click();
 
@@ -83,7 +83,5 @@ public class AutomationPracticeForm {
         $x("//td[text()='Picture']").sibling(0).shouldHave(text(file.getName()));
         $x("//td[text()='Address']").sibling(0).shouldHave(text(currentAddress));
         $x("//td[text()='State and City']").sibling(0).shouldHave(text("Haryana Karnal"));
-
-        closeWindow();
     }
 }
